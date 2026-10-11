@@ -1,0 +1,21 @@
+services:
+  web:
+    container_name: tzi11-web
+    build: .
+    ports:
+      - "8091:80"
+    environment:
+      DATABASE_URL: "postgresql://user:pass@db:5432/lab11db"
+      APP_MODE: "vuln"
+    depends_on:
+      - db
+  db:
+    container_name: tzi11-db
+    image: postgres:17
+    environment:
+      POSTGRES_DB: lab11db
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: pass
+      PGDATA: /var/lib/postgresql/data/pgdata
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
